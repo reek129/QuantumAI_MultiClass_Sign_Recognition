@@ -236,7 +236,7 @@ class optunaTuner(optunaTunerInterface):
     def create_vizualization(self):
         optuna.visualization.plot_parallel_coordinate(self.study).write_image(self.path+"/plot_parallel_coordinate.png")
         #optuna.visualization.plot_contour(self.study, params=['optimizer_name','var_depth']).write_image(self.path+"/plot_contour.png")
-        optuna.visualization.plot_slice(self.study).write_image(self.path+"/plot_slice.png")
+#        optuna.visualization.plot_slice(self.study).write_image(self.path+"/plot_slice.png")
         optuna.visualization.plot_param_importances(self.study).write_image(self.path+"/plot_param_importances.png")
         optuna.visualization.plot_optimization_history(self.study).write_image(self.path+"/plot_optimization_history.png")
         optuna.visualization.plot_intermediate_values(self.study).write_image(self.path+"/plot_intermediate_values.png")

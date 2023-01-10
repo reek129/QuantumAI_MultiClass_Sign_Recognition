@@ -26,10 +26,14 @@ class Main_Classical:
         
 #        Binary dataset directory = "data/dataset1"  [Stop Sign, NOT a Stop Sign]
 #        Multi dataset directory = "data/dataset2"   [stop,yield,do not enter, others ]
-        self.data_dir = "data/dataset2"
+        self.data_dir = "data/dataset1"
         
 #        type of problem Multiclass = MC, Binary = BC
-        self.problem_type = "MC"
+        self.problem_type = "BC"
+        
+                
+#        number of classes in the problem
+        self.n_classes = 2
         
 #        Option = [CLASSICAL_SCENARIO,HYBRID_SCENARIO]
         self.system_type = HYBRID_SCENARIO
@@ -38,24 +42,73 @@ class Main_Classical:
 #        Note: classical no impact, Hybrid Models Only
         self.approach = 1
         
+#        only attack
+        self.attack_code_run_only = 0
+        
 #        Model name
 #        Options = ["resnet18", "alexnet", "vgg16","inception_v3"]
-        model_name = "alexnet"
+        self.model_name = "alexnet"
         
 #        Name of parent folder
-        self.parent_folder_name = "QAI_LAB_CEL_"+str(self.approach)+"_"+self.system_type+"_"+model_name+"_"+self.problem_type+"_2022/"
+        self.parent_folder_name = "QAI_LAB_CEL_approach_"+str(self.approach)+"_"+self.system_type+"_"+self.model_name+"_"+self.problem_type+"_2022/"
+
         
-#        number of classes in the problem
-        self.n_classes = 4
+#        setting Path
+        if self.attack_code_run_only == 0:
+    #        create folder for saving result
+            fm = FolderManagement(self.parent_folder_name)
+            self.path = fm.get_model_path()
+            
+        else:
+            self.path = "C:\\Users\\reekm\\Documents\\september2\\Template6_MC_factoryDP\\QAI_LAB_CEL_hybrid_alexnet_BC_2022\\2023_01_10_time_03_02_27"
         
-#        create folder for saving result
-        fm = FolderManagement(self.parent_folder_name)
-        self.path = fm.get_model_path()
+        
+#        setting parameters
+        if self.attack_code_run_only == 0:
+                
+            self.optuna_params = self.set_optuna_parameters()
+            
+    #        Samplers 
+    #         option [TPE Sampler]
+            self.sampler_name = TPE_SAMPLER
+            
+    #        Prunner
+    #        Option = [HYPER_BAND_PRUNER,MEDIAN_PRUNNER]
+            self.pruner_name = HYPER_BAND_PRUNER
+            
+    #        Options for HYPER_BAND_PRUNER
+    #        min_resource=1, max_resource="auto", reduction_factor=3
+            self.pruner_parameters = {
+                    "min_resource":1,
+                    "max_resource":"auto",
+                    "reduction_factor":3
+                    }
+            
+    #        Options for MEDIAN_PRUNNER
+    #        n_startup_trials=3, n_warmup_steps=5, interval_steps=3
+    #        pruner_parameters = {
+    #                "n_startup_trials":3,
+    #                "n_warmup_steps":5,
+    #                "interval_steps":3
+    #                }
+            
+            self.n_trials = 10
+            
+            print("Before Entering Optuna Tuner: printing optuna_params")
+            print(self.optuna_params)
+            
+            
+            self.do_training()
+            self.attack_models_in_path(self.path)
+        else:
+            self.attack_models_in_path(self.path)
+        
+    def set_optuna_parameters(self):
         
 #        optuna parameters
         optuna_params = {}
         if self.system_type == CLASSICAL_SCENARIO:
-            optuna_params[MODEL_NAME] = [model_name]
+            optuna_params[MODEL_NAME] = [self.model_name]
             optuna_params[HYP_LR] = [1e-4,1e-2]
             optuna_params[HYP_OPTIMIZER_NAME] = ["SGD","Adam"]
             optuna_params[HYP_GAMMA_SCHEDULAR] = [1e-4,1e-2]
@@ -67,7 +120,7 @@ class Main_Classical:
             middle_layer_count = self.get_middle_layer_count()
             max_var_depth = 6/middle_layer_count
 #            Model Parameters
-            optuna_params[MODEL_NAME] = [model_name]
+            optuna_params[MODEL_NAME] = [self.model_name]
             optuna_params[HYP_LR] = [1e-4,1e-2]
             optuna_params[HYP_OPTIMIZER_NAME] = ["SGD","Adam"]
             optuna_params[HYP_GAMMA_SCHEDULAR] = [1e-4,1e-2]
@@ -91,62 +144,27 @@ class Main_Classical:
                 optuna_params[PENNY_MIDDLE_LAYER+"_"+str (counter)] = ["0","1","2","3","4","5","6"]
             
             optuna_params[PENNY_COUNT_MID_LAY] = middle_layer_count
-#            "var_depth":trial.suggest_int("var_depth",1,6),
-#         "ip":trial.suggest_int("ip",0,1),
-#         "front_layer":trial.suggest_int("front_layer",0,7),
-#         "op":trial.suggest_int("op",0,1),
-#         "last_layer":trial.suggest_int("last_layer",0,7),
-#        "entanglement_layer":trial.suggest_int("entanglement_layer",0,1),
-#        "measurement":trial.suggest_int("measurement",0,2),
-#         "middle_layer":trial.suggest_categorical("middle_layer",["0","1","2","3","4","5","6"])
-        
-#        Samplers 
-#         option [TPE Sampler]
-        sampler_name = TPE_SAMPLER
-        
-#        Prunner
-#        Option = [HYPER_BAND_PRUNER,MEDIAN_PRUNNER]
-        pruner_name = HYPER_BAND_PRUNER
-        
-#        Options for HYPER_BAND_PRUNER
-#        min_resource=1, max_resource="auto", reduction_factor=3
-        pruner_parameters = {
-                "min_resource":1,
-                "max_resource":"auto",
-                "reduction_factor":3
-                }
-        
-#        Options for MEDIAN_PRUNNER
-#        n_startup_trials=3, n_warmup_steps=5, interval_steps=3
-#        pruner_parameters = {
-#                "n_startup_trials":3,
-#                "n_warmup_steps":5,
-#                "interval_steps":3
-#                }
-        
-        self.n_trials = 2
-        
-        print("Before Entering Optuna Tuner: printing optuna_params")
-        print(optuna_params)
-        
+            
+            return optuna_params
+    def do_training(self):
         self.optuna_tuner = optunaTuner(
                 data_dir=self.data_dir,
                 approach = self.approach,
                 system_type = self.system_type,
                 n_classes = self.n_classes,
-                parameters= optuna_params,
-                pruner_parameters = pruner_parameters,
+                parameters= self.optuna_params,
+                pruner_parameters = self.pruner_parameters,
                 path = self.path,
                 direction=['maximize'],
-                sampler_name=sampler_name,
-                pruner_name = pruner_name,
+                sampler_name=self.sampler_name,
+                pruner_name = self.pruner_name,
                 n_trials= self.n_trials
                 )
         
-        
+    def attack_models_in_path(self,path):
 #        Attack Code for classical
         eps = 1.0
-        attack_main = AttackMain(self.path,self.system_type,self.n_classes,eps)
+        attack_main = AttackMain(path,self.system_type,self.n_classes,eps)
         attack_main.generate_attack_results()
         attack_main.get_final_result()
         
@@ -155,7 +173,7 @@ class Main_Classical:
         middle_layer_count = -1
         while middle_layer_count<1 or middle_layer_count>3:
             try:
-                middle_layer_count = int (input("ENTER NUMBER OF SINGLE QUBIT GATE YOU NEED IN VQC (SHOULD BE GREATER THAN 0 AND LESS THAN 4)"))
+                middle_layer_count = int (input("ENTER NUMBER OF SINGLE QUBIT GATE YOU NEED IN VQC (SHOULD BE GREATER THAN 0 AND LESS THAN 4) : "))
             except ValueError:
                 middle_layer_count = 1
                 
