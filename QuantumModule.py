@@ -27,7 +27,7 @@ class DressedQuantumNet2(nn.Module):
         super().__init__()
         self.qc_circuit_key = qc_circuit_key
         self.n_qubits = n_qubits
-        self.approach = 1
+        self.approach = approach
         
         self.pre_net = nn.Linear(num_ftrs, self.n_qubits)
         
