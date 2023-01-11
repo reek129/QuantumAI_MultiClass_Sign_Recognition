@@ -19,6 +19,7 @@ from Constants import CLASSICAL_SCENARIO, HYBRID_SCENARIO
 from Constants import PENNY_VARIATIONAL_DEPTH, PENNY_IP_LAYER_FLAG,PENNY_FRONT_LAYER
 from Constants import PENNY_OP_LAYER_FLAG,PENNY_LAST_LAYER, PENNY_MEASUREMENT_LAYER
 from Constants import PENNY_ENTANGLEMENT_LAYER,PENNY_MIDDLE_LAYER,PENNY_COUNT_MID_LAY
+from Constants import PENNY_FMAP_DEPTH, PENNY_FMAP_ID
 
 from classicalModel import classicalModel
 from PytorchOptunaHelper import pytorch_helper
@@ -29,9 +30,9 @@ import pickle as pkl
 
 class optunaTuner(optunaTunerInterface):
     
-    def __init__(self,data_dir,approach,system_type,n_classes,parameters,pruner_parameters,path,direction=['maximize'],sampler_name=TPE_SAMPLER,pruner_name = HYPER_BAND_PRUNER,n_trials=25):
+    def __init__(self,data_dir,approach,system_type,n_classes,parameters,pruner_parameters,path,direction=['maximize'],sampler_name=TPE_SAMPLER,pruner_name = HYPER_BAND_PRUNER,n_trials=25,num_epochs=15):
         self.param = parameters
-        self.batch_size_ls = [2,4,8,16,32,64,128]
+        self.batch_size_ls = [2,4,8,16,32,64,128,256,512,1024,2048]
         self.results =pd.DataFrame(columns=['ModelId','Best Loss','Trial','Test Accuracy','Description'])
         self.counter = 0
         
@@ -45,6 +46,7 @@ class optunaTuner(optunaTunerInterface):
         self.system_type = system_type
         self.approach = approach
         self.data_dir = data_dir
+        self.num_epochs = num_epochs
         
 #        setting sampler and Prunner
         self.sampler()
@@ -61,7 +63,8 @@ class optunaTuner(optunaTunerInterface):
         
         self.saving_output()
 #        create_vizualization
-        self.create_vizualization()
+        if approach ==1:
+            self.create_vizualization()
         
         
     def saving_output(self):
@@ -149,6 +152,13 @@ class optunaTuner(optunaTunerInterface):
             PENNY_MEASUREMENT_LAYER : trial.suggest_int(PENNY_MEASUREMENT_LAYER,
                                                          self.param[PENNY_MEASUREMENT_LAYER][0],
                                                          self.param[PENNY_MEASUREMENT_LAYER][1]),
+                                                        
+            PENNY_FMAP_ID : trial.suggest_int(PENNY_FMAP_ID,
+                                             self.param[PENNY_FMAP_ID][0],
+                                             self.param[PENNY_FMAP_ID][1]),
+            PENNY_FMAP_DEPTH : trial.suggest_int(PENNY_FMAP_DEPTH,
+                                             self.param[PENNY_FMAP_DEPTH][0],
+                                             self.param[PENNY_FMAP_DEPTH][1]),
     
                 }
             
@@ -172,7 +182,9 @@ class optunaTuner(optunaTunerInterface):
                     PENNY_LAST_LAYER : str(params[PENNY_LAST_LAYER]),
                     PENNY_ENTANGLEMENT_LAYER: params[PENNY_ENTANGLEMENT_LAYER],
                     PENNY_MEASUREMENT_LAYER : params[PENNY_MEASUREMENT_LAYER],
-                    PENNY_VARIATIONAL_DEPTH : params[PENNY_VARIATIONAL_DEPTH]
+                    PENNY_VARIATIONAL_DEPTH : params[PENNY_VARIATIONAL_DEPTH],
+                    PENNY_FMAP_DEPTH : params[PENNY_FMAP_DEPTH],
+                    PENNY_FMAP_ID : params[PENNY_FMAP_ID]
                     }
                         
             qc_circuit_key[PENNY_MIDDLE_LAYER] = temp_mid_layer
@@ -189,7 +201,7 @@ class optunaTuner(optunaTunerInterface):
 
             
     #    print("model is \n",model)
-        print(self.model)
+#        print(self.model)
         p1 = pytorch_helper(self.model,self.batch_size_ls[params[HYP_BATCH]],params[MODEL_NAME],self.path,self.data_dir)
         
         criterion = p1.get_crossEntropy_criterion()
@@ -198,7 +210,7 @@ class optunaTuner(optunaTunerInterface):
         
         scheduler = p1.get_optima_Schedular(optimizer,params[HYP_STEP],params[HYP_GAMMA_SCHEDULAR])
         
-        best_model, best_acc, best_loss = p1.train_model_optuna(trial, self.model, criterion,scheduler, optimizer, num_epochs=15)
+        best_model, best_acc, best_loss = p1.train_model_optuna(trial, self.model, criterion,scheduler, optimizer, num_epochs=self.num_epochs)
         
         torch.save(best_model.state_dict(),self.path +"/"+ f"model_{self.system_type}_trial_{trial.number}.pth")
         
