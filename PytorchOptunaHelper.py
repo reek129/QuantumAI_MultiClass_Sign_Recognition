@@ -235,9 +235,9 @@ class pytorch_helper:
             if trial.should_prune():
                 raise optuna.TrialPruned()
             
-            if epoch > 6 and best_acc < 0.8:
-                raise optuna.TrialPruned()
-    
+#            if epoch > 6 and best_acc < 0.8:
+#                raise optuna.TrialPruned()
+#    
         time_elapsed = time.time() - since
         model.load_state_dict(best_model_wts)
         

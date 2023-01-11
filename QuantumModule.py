@@ -18,7 +18,7 @@ from Constants import PENNY_FMAP_DEPTH,PENNY_FMAP_ID
 
 import pennylane as qml
 from pennylane import numpy as np
-from Constants import PENNY_VARIATIONAL_DEPTH,PENNY_MIDDLE_LAYER
+
 
 class DressedQuantumNet2(nn.Module):
     
