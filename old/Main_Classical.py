@@ -31,8 +31,7 @@ class Main_Classical:
 #        type of problem Multiclass = MC, Binary = BC
         self.problem_type = "BC"
         
-        self.num_epochs = 2        
-        
+                
 #        number of classes in the problem
         self.n_classes = 2
         
@@ -41,7 +40,7 @@ class Main_Classical:
         
 #        Option [1:without_fMAP,2:with_fmap] []
 #        Note: classical no impact, Hybrid Models Only
-        self.approach = 2
+        self.approach = 1
         
 #        only attack
         self.attack_code_run_only = 0
@@ -61,7 +60,7 @@ class Main_Classical:
             self.path = fm.get_model_path()
             
         else:
-            self.path = "C:\\Users\\reekm\\Documents\\september2\\Template6_MC_factoryDP\\QAI_LAB_CEL_approach_1_hybrid_alexnet_BC_2022\\2023_01_10_time_19_20_05"
+            self.path = "C:\\Users\\reekm\\Documents\\september2\\Template6_MC_factoryDP\\QAI_LAB_CEL_hybrid_alexnet_BC_2022\\2023_01_10_time_03_02_27"
         
         
 #        setting parameters
@@ -93,18 +92,16 @@ class Main_Classical:
     #                "interval_steps":3
     #                }
             
-            self.n_trials = 5
+            self.n_trials = 10
             
             print("Before Entering Optuna Tuner: printing optuna_params")
-#            print(self.optuna_params)
+            print(self.optuna_params)
             
             
             self.do_training()
             self.attack_models_in_path(self.path)
         else:
             self.attack_models_in_path(self.path)
-            
-        print(f"Path for saved result of this execution is :{self.path}")
         
     def set_optuna_parameters(self):
         
@@ -121,7 +118,7 @@ class Main_Classical:
         elif self.system_type == HYBRID_SCENARIO:
             
             middle_layer_count = self.get_middle_layer_count()
-            max_var_depth = min(6/middle_layer_count,3)
+            max_var_depth = 6/middle_layer_count
 #            Model Parameters
             optuna_params[MODEL_NAME] = [self.model_name]
             optuna_params[HYP_LR] = [1e-4,1e-2]
@@ -148,8 +145,7 @@ class Main_Classical:
             
             optuna_params[PENNY_COUNT_MID_LAY] = middle_layer_count
             
-        return optuna_params
-        
+            return optuna_params
     def do_training(self):
         self.optuna_tuner = optunaTuner(
                 data_dir=self.data_dir,
@@ -162,14 +158,13 @@ class Main_Classical:
                 direction=['maximize'],
                 sampler_name=self.sampler_name,
                 pruner_name = self.pruner_name,
-                n_trials= self.n_trials,
-                num_epochs = self.num_epochs
+                n_trials= self.n_trials
                 )
         
     def attack_models_in_path(self,path):
 #        Attack Code for classical
         eps = 1.0
-        attack_main = AttackMain(path,self.data_dir,self.approach,self.system_type,self.n_classes,eps)
+        attack_main = AttackMain(path,self.system_type,self.n_classes,eps)
         attack_main.generate_attack_results()
         attack_main.get_final_result()
         

@@ -18,7 +18,7 @@ from Constants import PENNY_FMAP_DEPTH,PENNY_FMAP_ID
 
 import pennylane as qml
 from pennylane import numpy as np
-
+from Constants import PENNY_VARIATIONAL_DEPTH,PENNY_MIDDLE_LAYER
 
 class DressedQuantumNet2(nn.Module):
     
@@ -27,7 +27,7 @@ class DressedQuantumNet2(nn.Module):
         super().__init__()
         self.qc_circuit_key = qc_circuit_key
         self.n_qubits = n_qubits
-        self.approach = approach
+        self.approach = 1
         
         self.pre_net = nn.Linear(num_ftrs, self.n_qubits)
         

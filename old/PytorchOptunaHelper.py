@@ -235,9 +235,9 @@ class pytorch_helper:
             if trial.should_prune():
                 raise optuna.TrialPruned()
             
-#            if epoch > 6 and best_acc < 0.8:
-#                raise optuna.TrialPruned()
-#    
+            if epoch > 6 and best_acc < 0.8:
+                raise optuna.TrialPruned()
+    
         time_elapsed = time.time() - since
         model.load_state_dict(best_model_wts)
         
@@ -278,7 +278,7 @@ class pytorch_helper:
             adv_untargeted = adversary.perturb(inputs, labels)
             
             outputs = None
-            if self.model_name == INCEPTION_V3_MODEL:
+            if self.model_name == "inception_v3":
                 outputs = model(inputs)
                 outputs = outputs[0]
                 
