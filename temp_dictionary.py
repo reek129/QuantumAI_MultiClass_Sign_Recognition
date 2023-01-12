@@ -47,30 +47,48 @@ import collections
 #    
 #a = ["5","1","0"]
 #print("".join(a))
-
-test_dict = {
-        'params_middle_layer_1':4,
-        'params_middle_layer_3':2,
-        'params_middle_layer_2':0,
-        'z':7,
-        'x':2
-        
-        }
-
-test = ['params_middle_layer_1','params_middle_layer_3','params_middle_layer_2']
-
-k = [key for key in test_dict if key.startswith('params_'+PENNY_MIDDLE_LAYER)]
-print(k)
-
-print(sorted(k))
-
-v = [str(test_dict[kk]) for kk in sorted(k) ]
-print(v)
-val = "".join(v)
-print(val)
-print(type(val))
-
+#
+#test_dict = {
+#        'params_middle_layer_1':4,
+#        'params_middle_layer_3':2,
+#        'params_middle_layer_2':0,
+#        'z':7,
+#        'x':2
+#        
+#        }
+#
+#test = ['params_middle_layer_1','params_middle_layer_3','params_middle_layer_2']
+#
+#k = [key for key in test_dict if key.startswith('params_'+PENNY_MIDDLE_LAYER)]
+#print(k)
+#
+#print(sorted(k))
+#
+#v = [str(test_dict[kk]) for kk in sorted(k) ]
+#print(v)
+#val = "".join(v)
+#print(val)
+#print(type(val))
+#
 
 
 
 #    print(best.to_dict())
+import torch
+use_cuda = torch.cuda.is_available()
+print(use_cuda)
+
+device = torch.device("cuda" if use_cuda else "cpu")
+print("Device: ",device)
+
+
+import pickle
+middle_layer_count = 4
+f = open('store.pckl', 'wb')
+pickle.dump(middle_layer_count, f)
+f.close()
+
+f = open('store.pckl', 'rb')
+obj = pickle.load(f)
+print(obj)
+f.close()

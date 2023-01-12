@@ -18,7 +18,6 @@ from Constants import PENNY_VARIATIONAL_DEPTH, PENNY_IP_LAYER_FLAG,PENNY_FRONT_L
 from Constants import PENNY_OP_LAYER_FLAG,PENNY_LAST_LAYER, PENNY_MEASUREMENT_LAYER
 from Constants import PENNY_ENTANGLEMENT_LAYER,PENNY_MIDDLE_LAYER,PENNY_COUNT_MID_LAY
 from Constants import PENNY_FMAP_DEPTH,PENNY_FMAP_ID
-
 from PickleHelper import PickleHelper
 
 import pandas as pd
@@ -33,10 +32,7 @@ class Main_Classical:
 #        type of problem Multiclass = MC, Binary = BC
         self.problem_type = "MC"
         
-        self.num_epochs = 25     
-        
-        self.n_trials = 100
-               
+        self.num_epochs = 25        
                 
 #        number of classes in the problem
         self.n_classes = 4
@@ -48,12 +44,12 @@ class Main_Classical:
 #        Note: classical no impact, Hybrid Models Only
         self.approach = 1
         
-#        only attack [set it to one with folder location in path]
+#        only attack
         self.attack_code_run_only = 0
         
 #        Model name
 #        Options = ["resnet18", "alexnet", "vgg16","inception_v3"]
-        self.model_name = "alexnet"
+        self.model_name = "vgg16"
         
 #        Name of parent folder
         self.parent_folder_name = "QAI_LAB_CEL_approach_"+str(self.approach)+"_"+self.system_type+"_"+self.model_name+"_"+self.problem_type+"_2022/"
@@ -98,9 +94,10 @@ class Main_Classical:
     #                "interval_steps":3
     #                }
             
-        #     print("Before Entering Optuna Tuner: printing optuna_params")
-#            print(self.optuna_params)
+            self.n_trials = 100
             
+            print("Before Entering Optuna Tuner: printing optuna_params")
+#            print(self.optuna_params)
             print(f"n_trials : {self.n_trials}, n_epochs :{self.n_classes}")
             
             self.do_training()
@@ -125,6 +122,7 @@ class Main_Classical:
         elif self.system_type == HYBRID_SCENARIO:
             
             middle_layer_count = self.get_middle_layer_count()
+            print(self.path)
             max_var_depth = min(6/middle_layer_count,3)
 #            Model Parameters
             optuna_params[MODEL_NAME] = [self.model_name]
@@ -185,12 +183,11 @@ class Main_Classical:
                 middle_layer_count = int (input("ENTER NUMBER OF SINGLE QUBIT GATE YOU NEED IN VQC (SHOULD BE GREATER THAN 0 AND LESS THAN 4) : "))
             except ValueError:
                 middle_layer_count = 1
-                
+            self.save_csv(val=middle_layer_count,)
         print(f"Middle layer Count: {middle_layer_count}")
         ph = PickleHelper(self.path)
         ph.save_pkl(data = middle_layer_count,
         filename= PENNY_COUNT_MID_LAY+".pckl")
-
         return middle_layer_count
         
         
