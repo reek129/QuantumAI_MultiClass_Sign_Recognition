@@ -32,7 +32,7 @@ class Main_Classical:
         self.problem_type = "BC"
         
         self.num_epochs = 2        
-        
+                
 #        number of classes in the problem
         self.n_classes = 2
         
@@ -148,7 +148,7 @@ class Main_Classical:
             
             optuna_params[PENNY_COUNT_MID_LAY] = middle_layer_count
             
-        return optuna_params
+            return optuna_params
         
     def do_training(self):
         self.optuna_tuner = optunaTuner(
