@@ -7,12 +7,12 @@ class PickleHelper:
         super()
         self.path = path
     def save_pkl(self, data, filename):
-        f = open('store.pckl', 'wb')
+        f = open(self.path+filename, 'wb')
         pickle.dump(data, self.path+filename)
         f.close()
 
     def load_pkl(filename):
-        f = open('store.pckl', 'rb')
+        f = open(self.path+filename, 'rb')
         obj = pickle.load(filename)
         f.close()
         return obj
