@@ -52,7 +52,7 @@ class Main_Classical:
         self.model_name = "vgg16"
         
 #        Name of parent folder
-        self.parent_folder_name = "QAI_LAB_CEL_approach_"+str(self.approach)+"_"+self.system_type+"_"+self.model_name+"_"+self.problem_type+"_2022/"
+        self.parent_folder_name = "QAI_LAB_CEL_app_"+str(self.approach)+"_"+self.system_type+"_"+self.model_name+"_"+self.problem_type+"_2022/"
 
         
 #        setting Path

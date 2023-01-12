@@ -82,13 +82,13 @@ device = torch.device("cuda" if use_cuda else "cpu")
 print("Device: ",device)
 
 
-import pickle
-middle_layer_count = 4
-f = open('store.pckl', 'wb')
-pickle.dump(middle_layer_count, f)
-f.close()
+# import pickle
+# middle_layer_count = 4
+# f = open('store.pckl', 'wb')
+# pickle.dump(middle_layer_count, f)
+# f.close()
 
-f = open('store.pckl', 'rb')
-obj = pickle.load(f)
-print(obj)
-f.close()
+# f = open('store.pckl', 'rb')
+# obj = pickle.load(f)
+# print(obj)
+# f.close()

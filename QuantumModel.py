@@ -5,6 +5,7 @@ Created on Mon Jan  9 13:38:23 2023
 @author: reekm
 """
 
+import torch 
 
 from TL_Model import TLModel
 from Constants import RESNET_MODEL,VGG16_MODEL, ALEXNET_MODEL, INCEPTION_V3_MODEL 
@@ -16,6 +17,7 @@ class QuantumModel(TLModel):
         super().__init__(model_name)
         self.model = super().get_model()
         self.num_ftrs = super().get_model_num_ftrs()
+        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         
         self.model_name = model_name
         self.n_qubits = n_qubits
@@ -44,4 +46,4 @@ class QuantumModel(TLModel):
     
     #    overridding inherited method    
     def get_model(self):
-        return self.model
+        return self.model.to(self.device)

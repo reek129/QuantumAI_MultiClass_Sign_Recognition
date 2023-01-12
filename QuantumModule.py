@@ -28,6 +28,7 @@ class DressedQuantumNet2(nn.Module):
         self.qc_circuit_key = qc_circuit_key
         self.n_qubits = n_qubits
         self.approach = approach
+        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         
         self.pre_net = nn.Linear(num_ftrs, self.n_qubits)
         
@@ -47,7 +48,7 @@ class DressedQuantumNet2(nn.Module):
         pre_out = self.pre_net(input_features)
         q_in = torch.tanh(pre_out) * np.pi / 2.0
         q_out = torch.Tensor(0, self.n_qubits)
-#        q_out = q_out.to(device)
+        q_out = q_out.to(self.device)
 
         for elem in q_in:
             q_out_elem = self.qlayer(elem).float().unsqueeze(0)

@@ -8,7 +8,7 @@ class PickleHelper:
         self.path = path
     def save_pkl(self, data, filename):
         f = open(self.path+filename, 'wb')
-        pickle.dump(data, self.path+filename)
+        pickle.dump(data, f)
         f.close()
 
     def load_pkl(filename):
