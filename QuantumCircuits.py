@@ -94,45 +94,45 @@ class Quantum_circuit(Layers):
         reps = self.qc_circuit_key[PENNY_FMAP_DEPTH]
         
         if featureMap_id == 1:
-            self.feature_map.feature_map1(x,qubits,reps)
+            self.feature_map.feature_map1(x,reps)
         elif featureMap_id == 2:
-            self.feature_map.feature_map2(x,qubits,reps)
+            self.feature_map.feature_map2(x, reps)
         elif featureMap_id == 3:
-            self.feature_map.feature_map3(x,qubits,reps)
+            self.feature_map.feature_map3(x, reps)
         elif featureMap_id == 4:
-            self.feature_map.feature_map4(x,qubits,reps)
+            self.feature_map.feature_map4(x, reps)
         elif featureMap_id == 5:
-            self.feature_map.feature_map5(x,qubits,reps)
+            self.feature_map.feature_map5(x, reps)
         elif featureMap_id == 6:
-            self.feature_map.feature_map6(x,qubits,reps)
+            self.feature_map.feature_map6(x, reps)
         elif featureMap_id == 7:
-            self.feature_map.feature_map7(x,qubits,reps)
+            self.feature_map.feature_map7(x, reps)
         elif featureMap_id == 8:
-            self.feature_map.feature_map8(x,qubits,reps)
+            self.feature_map.feature_map8(x, reps)
         elif featureMap_id == 9:
-            self.feature_map.feature_map9(x,qubits,reps)
+            self.feature_map.feature_map9(x, reps)
         elif featureMap_id == 10:
-            self.feature_map.feature_map10(x,qubits,reps)
+            self.feature_map.feature_map10(x, reps)
         elif featureMap_id == 11:
-            self.feature_map.feature_map11(x,qubits,reps)
+            self.feature_map.feature_map11(x, reps)
         elif featureMap_id == 12:
-            self.feature_map.feature_map12(x,qubits,reps)
+            self.feature_map.feature_map12(x, reps)
         elif featureMap_id == 13:
-            self.feature_map.feature_map13(x,qubits,reps)
+            self.feature_map.feature_map13(x, reps)
         elif featureMap_id == 14:
-            self.feature_map.feature_map14(x,qubits,reps)
+            self.feature_map.feature_map14(x, reps)
         elif featureMap_id == 15:
-            self.feature_map.feature_map15(x,qubits,reps)
+            self.feature_map.feature_map15(x, reps)
         elif featureMap_id == 16:
-            self.feature_map.feature_map16(x,qubits,reps)
+            self.feature_map.feature_map16(x, reps)
         elif featureMap_id == 17:
-            self.feature_map.feature_map17(x,qubits,reps)
+            self.feature_map.feature_map17(x, reps)
         elif featureMap_id == 18:
-            self.feature_map.feature_map18(x,qubits,reps)
+            self.feature_map.feature_map18(x, reps)
         elif featureMap_id == 19:
-            self.feature_map.feature_map19(x,qubits,reps)
+            self.feature_map.feature_map19(x, reps)
         elif featureMap_id == 20:
-            self.feature_map.feature_map20(x,qubits,reps)
+            self.feature_map.feature_map20(x, reps)
 
     
     

@@ -37,10 +37,15 @@ class DressedQuantumNet2(nn.Module):
 #        get quantum Device
         dev = self.get_quantum_device(device_id)
         
-        
-        qnode = qml.QNode(self.quantum_net,dev,interface="torch")
-        self.qlayer = qml.qnn.TorchLayer(qnode,weight_shapes)
-        self.post_net = nn.Linear(self.n_qubits, n_classes)
+        if self.approach == 1:
+                
+            qnode = qml.QNode(self.quantum_net,dev,interface="torch")
+            self.qlayer = qml.qnn.TorchLayer(qnode,weight_shapes)
+            self.post_net = nn.Linear(self.n_qubits, n_classes)
+        elif self.approach == 2:
+            qnode = qml.QNode(self.quantum_net2,dev,interface="torch")
+            self.qlayer = qml.qnn.TorchLayer(qnode,weight_shapes)
+            self.post_net = nn.Linear(self.n_qubits, n_classes)
 #        self.key = key
         
     def forward(self, input_features):
@@ -63,6 +68,31 @@ class DressedQuantumNet2(nn.Module):
             return qml.device('default.qubit', wires=self.n_qubits)
         
     def quantum_net(self,inputs, weights):
+        qc = Quantum_circuit(self.qc_circuit_key,self.n_qubits )
+        
+        if self.approach == 1:
+            if self.qc_circuit_key[PENNY_IP_LAYER_FLAG] ==1:
+                qc.front_layers(inputs)
+       
+            for k in range(int(self.qc_circuit_key[PENNY_VARIATIONAL_DEPTH])):
+                qc.get_var_layer2(k,weights)
+                
+            qc.get_entanglement_layer(self.qc_circuit_key[PENNY_ENTANGLEMENT_LAYER],True)
+            
+            if self.qc_circuit_key[PENNY_OP_LAYER_FLAG]  == 1:
+                qc.last_layers(inputs)
+                
+        elif self.approach == 2:
+            qc.get_feature_map(inputs,self.n_qubits)
+        elif self.approach == 3:
+            qc.get_layer('7',inputs)
+            qc.get_feature_map(inputs,self.n_qubits)
+                
+        exp_vals = qc.get_expectation_value(int(self.qc_circuit_key[PENNY_MEASUREMENT_LAYER]))
+        return tuple(exp_vals)
+
+
+    def quantum_net2(self,inputs, weights):
         qc = Quantum_circuit(self.qc_circuit_key,self.n_qubits )
         
         if self.approach == 1:

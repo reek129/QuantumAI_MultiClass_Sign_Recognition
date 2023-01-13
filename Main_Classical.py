@@ -33,9 +33,9 @@ class Main_Classical:
 #        type of problem Multiclass = MC, Binary = BC
         self.problem_type = "MC"
         
-        self.num_epochs = 25     
+        self.num_epochs = 2     
         
-        self.n_trials = 100
+        self.n_trials = 3
                
                 
 #        number of classes in the problem
@@ -46,7 +46,7 @@ class Main_Classical:
         
 #        Option [1:without_fMAP,2:with_fmap] []
 #        Note: classical no impact, Hybrid Models Only
-        self.approach = 1
+        self.approach = 2
         
 #        only attack [set it to one with folder location in path]
         self.attack_code_run_only = 0
