@@ -35,7 +35,7 @@ class Main_Classical:
         
         self.num_epochs = 2     
         
-        self.n_trials = 3
+        self.n_trials = 2
                
                 
 #        number of classes in the problem

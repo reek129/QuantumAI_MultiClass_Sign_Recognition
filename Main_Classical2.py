@@ -32,7 +32,9 @@ class Main_Classical:
 #        type of problem Multiclass = MC, Binary = BC
         self.problem_type = "MC"
         
-        self.num_epochs = 25        
+        self.num_epochs = 25       
+
+        self.n_trials = 100 
                 
 #        number of classes in the problem
         self.n_classes = 4
@@ -42,7 +44,7 @@ class Main_Classical:
         
 #        Option [1:without_fMAP,2:with_fmap] []
 #        Note: classical no impact, Hybrid Models Only
-        self.approach = 1
+        self.approach = 2
         
 #        only attack
         self.attack_code_run_only = 0
@@ -94,7 +96,6 @@ class Main_Classical:
     #                "interval_steps":3
     #                }
             
-            self.n_trials = 100
             
             print("Before Entering Optuna Tuner: printing optuna_params")
 #            print(self.optuna_params)
@@ -183,7 +184,7 @@ class Main_Classical:
                 middle_layer_count = int (input("ENTER NUMBER OF SINGLE QUBIT GATE YOU NEED IN VQC (SHOULD BE GREATER THAN 0 AND LESS THAN 4) : "))
             except ValueError:
                 middle_layer_count = 1
-            self.save_csv(val=middle_layer_count,)
+            
         print(f"Middle layer Count: {middle_layer_count}")
         ph = PickleHelper(self.path)
         ph.save_pkl(data = middle_layer_count,

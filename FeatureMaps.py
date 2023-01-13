@@ -56,43 +56,43 @@ class FeatureMaps():
     def feature_map4(self,x,reps): 
         
         for _ in range(reps):
-            for i in range(self.num_qubits):
+            for i in range(self.n_qubits):
                 qml.Hadamard(wires=i)
-            for i in range(self.num_qubits - 1):
+            for i in range(self.n_qubits - 1):
                 qml.CZ(wires=[i, i+1])
-            for i in range(self.num_qubits):
+            for i in range(self.n_qubits):
                 qml.RX(x[i],wires= i)
-            for i in range(self.num_qubits-1, 0, -1):
+            for i in range(self.n_qubits-1, 0, -1):
                 qml.CZ(wires=[i, i-1])
-            for i in range(self.num_qubits):
+            for i in range(self.n_qubits):
                 qml.Hadamard(wires=i)
     
     
     def feature_map5(self,x,reps): 
         
         for _ in range(reps):
-            for i in range(self.num_qubits):
+            for i in range(self.n_qubits):
                 qml.RX(x[i],wires= i)
                 qml.RZ(x[i],wires= i)
-            for i in range(self.num_qubits-1, 0, -1):
+            for i in range(self.n_qubits-1, 0, -1):
                 qml.CNOT(wires=[i, i-1])
     
     def feature_map6(self,x,reps): 
         
         for _ in range(reps):
-            for i in range(self.num_qubits):
+            for i in range(self.n_qubits):
                 qml.RX(x[i], wires=i)
                 qml.RZ(x[i], wires=i)
-            for i in range(self.num_qubits-1, 0, -1):
+            for i in range(self.n_qubits-1, 0, -1):
                 qml.CZ(wires=[i, i-1])
     
     def feature_map7(self,x,reps): 
         
         for _ in range(reps):
-            for i in range(self.num_qubits):
+            for i in range(self.n_qubits):
                 qml.RX(x[i], wires=i)
                 qml.RZ(x[i], wires=i)
-            for i in range(self.num_qubits-1, 0, -1):
+            for i in range(self.n_qubits-1, 0, -1):
                 qml.RZ(x[i-1], wires=i-1)
                 qml.CNOT(wires=[i, i-1])
                 qml.RZ(x[i-1],wires= i-1)
@@ -100,10 +100,10 @@ class FeatureMaps():
     def feature_map8(self,x,reps): 
         
         for _ in range(reps):
-            for i in range(self.num_qubits):
+            for i in range(self.n_qubits):
                 qml.RX(x[i],wires= i)
                 qml.RZ(x[i],wires= i)
-            for i in range(self.num_qubits-1, 0, -1):
+            for i in range(self.n_qubits-1, 0, -1):
                 qml.RX(x[i-1],wires= i-1)
                 qml.CNOT(wires=[i, i-1])
                 qml.RX(x[i-1],wires= i-1)
@@ -111,11 +111,11 @@ class FeatureMaps():
     def feature_map9(self,x,reps): 
         
         for _ in range(reps):
-            for i in range(self.num_qubits):
+            for i in range(self.n_qubits):
                 qml.RX(x[i],wires= i)
                 qml.RZ(x[i],wires= i)
-            for control in range(self.num_qubits-1, -1, -1):
-                for target in range(self.num_qubits-1, -1, -1):
+            for control in range(self.n_qubits-1, -1, -1):
+                for target in range(self.n_qubits-1, -1, -1):
                     if control != target:
                         qml.RZ(x[target],wires= target)
                         qml.CNOT(wires=[control, target])
@@ -126,11 +126,11 @@ class FeatureMaps():
         
         
         for _ in range(reps):
-            for i in range(self.num_qubits):
+            for i in range(self.n_qubits):
                 qml.RX(x[i], wires=i)
                 qml.RZ(x[i], wires=i)
-            for control in range(self.num_qubits-1, -1, -1):
-                for target in range(self.num_qubits-1, -1, -1):
+            for control in range(self.n_qubits-1, -1, -1):
+                for target in range(self.n_qubits-1, -1, -1):
                     if control != target:
                         qml.RX(x[target],wires= target)
                         qml.CNOT(wires=[control, target])
@@ -139,11 +139,11 @@ class FeatureMaps():
     def feature_map11(self,x,reps): 
         
         for _ in range(reps):
-            for i in range(self.num_qubits):
+            for i in range(self.n_qubits):
                 qml.RX(x[i], wires=i)
                 qml.RZ(x[i], wires=i)
-            for control in range(self.num_qubits-1, -1, -1):
-                for target in range(self.num_qubits-1, -1, -1):
+            for control in range(self.n_qubits-1, -1, -1):
+                for target in range(self.n_qubits-1, -1, -1):
                     if control != target:
                         qml.RX(x[target], wires=target)
                         qml.CNOT(wires=[control, target])
@@ -152,41 +152,41 @@ class FeatureMaps():
     def feature_map12(self,x,reps): 
         
         for _ in range(reps):
-            for i in range(self.num_qubits):
+            for i in range(self.n_qubits):
                 qml.Hadamard(wires=i)
-            for i in range(self.num_qubits - 1):
+            for i in range(self.n_qubits - 1):
                 qml.CZ(wires=[i, i+1])
-            for i in range(self.num_qubits):
+            for i in range(self.n_qubits):
                 qml.RX(x[i], wires=i)
     
     def feature_map13(self,x,reps): 
         
         for _ in range(reps):
-            for i in range(self.num_qubits):
+            for i in range(self.n_qubits):
                 qml.RY(x[i],wires= i)
-            for i in range(self.num_qubits - 1, 0, -1):
+            for i in range(self.n_qubits - 1, 0, -1):
                 qml.CZ(wires=[i, i-1])
-            qml.CZ(wires=[self.num_qubits-1, 0])
-            for i in range(self.num_qubits):
+            qml.CZ(wires=[self.n_qubits-1, 0])
+            for i in range(self.n_qubits):
                 qml.RY(x[i], wires=i)
     
     def feature_map14(self,x,reps): 
         
         for _ in range(reps):
-            for i in range(self.num_qubits):
+            for i in range(self.n_qubits):
                 qml.RY(x[i],wires= i)
                 qml.RZ(x[i], wires=i)
-            for i in range(self.num_qubits - 1, 0, -1):
+            for i in range(self.n_qubits - 1, 0, -1):
                 qml.CNOT(wires=[i, i-1])
                
             
     def feature_map15(self,x,reps): 
         
         for _ in range(reps):
-            for i in range(self.num_qubits):
+            for i in range(self.n_qubits):
                 qml.RY(x[i], wires=i)
                 qml.RZ(x[i], wires=i)
-            for i in range(self.num_qubits - 1, 0, -1):
+            for i in range(self.n_qubits - 1, 0, -1):
                 qml.CZ(wires=[i, i-1])
             qml.RY(x[1],wires= 1)
             qml.RZ(x[1], wires=1)
@@ -194,13 +194,13 @@ class FeatureMaps():
     def feature_map16(self,x,reps): 
         
         for _ in range(reps):
-            for i in range(self.num_qubits):
+            for i in range(self.n_qubits):
                 qml.RX(x[i], wires=i)
                 qml.RZ(x[i], wires=i)
             qml.RX(x[0], wires=0)
-            qml.CNOT(wires=[self.num_qubits - 1, 0])
+            qml.CNOT(wires=[self.n_qubits - 1, 0])
             qml.RX(x[0], wires=0)
-            for i in range(self.num_qubits-2, -1, -1):
+            for i in range(self.n_qubits-2, -1, -1):
                 qml.RX(x[i+1],wires= i+1)
                 qml.CNOT(wires=[i, i+1])
                 qml.RX(x[i+1],wires= i+1)
